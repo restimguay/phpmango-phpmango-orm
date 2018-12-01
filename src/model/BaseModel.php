@@ -1,6 +1,6 @@
 <?php
 
-namespace model;
+namespace phpmango\model;
 
 use obj\BaseObject;
 
