@@ -18,6 +18,7 @@ class MySqlConnection extends BaseDatabase implements DatabaseConnection
         ];
         $this->_driver = \PDO::class;
         $this->_dsn = "mysql:host=$host;dbname=$db;charset=$charset;";
+        
         $this->connect($user,$pass,$options);
     }
 
