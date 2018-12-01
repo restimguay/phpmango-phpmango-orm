@@ -1,8 +1,8 @@
 <?php
 
-namespace phpmango\model;
+namespace MGO\model;
 
-use obj\BaseObject;
+use MGO\obj\BaseObject;
 
 
 class BaseModel extends BaseObject
