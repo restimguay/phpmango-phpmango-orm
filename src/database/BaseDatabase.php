@@ -12,7 +12,7 @@ class BaseDatabase extends BaseObject
     private static $_connection;
     public function connect($user,$pass,$options){
         if(self::$_connection==null){
-            self::$_connection = new $this->_driver($this->_dsn,$user,$password,$options);
+            self::$_connection = new $this->_driver($this->_dsn,$user,$pass,$options);
         }
     }
 }
