@@ -13,17 +13,25 @@ class BaseDatabase extends BaseObject
     private static $_pass;
     private static $_options;
     private static $_connection;
-    public function connect($dsn,$user,$pass,$options){
-        if(self::$_connection==null){
-            self::$_dsn = $dsn;
-            self::$_user = $user;
-            self::$_pass = $pass;
-            self::$_options = $options;
-            $this->makeConnection();
+    /**
+     * @property DBConfig
+     */
+    private static $_dbconfig;
+    /**
+     * @var BaseDatabase $_instance
+     */
+    private static $_instance=null;
+    public static function setConfig(DBConfig $dbConfig){
+        self::$_dbconfig = $dbConfig;
+    }
+
+    public static function connect(){
+        if(self::$_instance == null){
+            self::$_instance = new BaseDatabase();
         }
     }
 
-    private function makeConnection(){
+    private static function makeConnection(){
         if(self::$_connection==null){
             self::$_connection = new self::$_driver(self::$_dsn,self::$_user,self::$_pass,self::$_options);
         }
