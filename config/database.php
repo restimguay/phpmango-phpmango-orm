@@ -3,7 +3,7 @@ return [
     'db'=>[
         'dev'=>[
             'host'=>'localhost',
-            'database'=>'project_social',
+            'database'=>'auto_db',
             'username'=>'root',
             'password'=>'',
             'charset'=>'utf8mb4',

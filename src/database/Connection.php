@@ -20,16 +20,20 @@ class Connection extends \PDO
     public function __construct(DBConfig $config)
     {
         $this->setConfig($config);
-        $this->start();
+        $this->connect();
     }
 
     /**
+     * Sets the database connection details
      * @param DBConfig
      */
-    public function setConfig(DBConfig $config){
+    private function setConfig(DBConfig $config){
         $this->_config = $config;
     }
-    public function start(){
+    /**
+     * Make a database connection
+     */
+    private function connect(){
         if(self::$_connection == null){
             parent::__construct($this->_config->getDSN(),$this->_config->getUsername(),$this->_config->getPassword());
             self::$_connection = $this;

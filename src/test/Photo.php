@@ -4,7 +4,7 @@ namespace MGO\test;
 
 use MGO\model\BaseModel;
 
-
+{}
 class Photo extends BaseModel
 {
     /**

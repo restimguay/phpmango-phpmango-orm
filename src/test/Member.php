@@ -74,7 +74,71 @@ class Member extends BaseModel
                 'max'=>6,
                 'label'=>'Sex',
                 'required'=>true
+            ], 
+            'email'=>[
+                'type'=>'string',
+                'min'=>10,
+                'max'=>64,
+                'label'=>'E-mail',
+                'required'=>true
             ],
+            'first_name'=>[
+                'type'=>'string',
+                'min'=>1,
+                'max'=>64,
+                'label'=>'First Name',
+                'required'=>true
+            ],
+            'surname'=>[
+                'type'=>'string',
+                'min'=>1,
+                'max'=>64,
+                'label'=>'Surname',
+                'required'=>true
+            ],
+            'middle_name'=>[
+                'type'=>'string',
+                'min'=>1,
+                'max'=>64,
+                'label'=>'Middle Name',
+                'required'=>true
+            ],
+            'password_hash'=>[
+                'type'=>'string',
+                'min'=>1,
+                'max'=>64,
+                'label'=>'Password Hash',
+                'required'=>true,
+                'display'=>false
+            ],
+            'session_key'=>[
+                'type'=>'string',
+                'min'=>1,
+                'max'=>64,
+                'label'=>'Session Key',
+                'required'=>false,
+                'display'=>false
+            ],
+            'email_validate_key'=>[
+                'type'=>'string',
+                'min'=>1,
+                'max'=>64,
+                'label'=>'Email Validate Key',
+                'required'=>false,
+                'display'=>false
+            ],
+            'joined_date'=>[
+                'type'=>'integer',
+                'max'=>14,
+                'label'=>'Date Joined',
+                'required'=>true
+            ],
+            'last_login'=>[
+                'type'=>'integer',
+                'max'=>14,
+                'label'=>'Last Login',
+                'required'=>true
+            ]
         ];
     }
 }
