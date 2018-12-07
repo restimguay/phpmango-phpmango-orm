@@ -288,7 +288,7 @@ class BaseModel extends Connection
         $definition = $this->definition();
         try {
             $result = $this->db('select')->query("SELECT 1 FROM $tableName LIMIT 1");
-            if(!$result){                
+            if(!$result){
                 $fieldInfo = isset($definition[$this->_primaryKey])?$definition[$this->_primaryKey]:[];
                 //set the default field type to string
                 $fieldType = isset($definition['type'])?$definition['type']:'string';
@@ -323,6 +323,7 @@ class BaseModel extends Connection
             }
         }
         if($msg!=''){
+            echo "Fields for ".__CLASS__." from $tableName table\n\n";
             echo $msg;
         }
         $objVars = get_object_vars($this);
