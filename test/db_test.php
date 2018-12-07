@@ -4,7 +4,7 @@
     $config = array_merge(
         require __DIR__.'/../config/database.php'
     );
-    define('DB_ENVIRONMENT','dev');
+    define('DB_ENVIRONMENT','prod');
     use MGO\database\Connection;
     use MGO\database\DBConfig;
     use MGO\model\BaseModel;
@@ -12,12 +12,11 @@
     use MGO\test\Photo;
 
 
-    $dbConfig = new DBConfig();
-    $dbConfig->setConfig($config['db'],DB_ENVIRONMENT);
+    $dbConfig = new DBConfig($config['db'],DB_ENVIRONMENT);
     $conn = new Connection($dbConfig);
 
-    $conn->setConfig($dbConfig);
-    $conn->start();
+    //$conn->setConfig($dbConfig);
+    //$conn->start();
 
     //$db = new BaseModel();
     //$result = $db->findIn('member')->where(['id'=>1])->limitBy(1)->fetchAssoc();

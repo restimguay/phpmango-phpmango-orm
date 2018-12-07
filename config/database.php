@@ -2,46 +2,58 @@
 return [
     'db'=>[
         'dev'=>[
-            'host'=>'localhost',
-            'database'=>'auto_db',
-            'username'=>'root',
-            'password'=>'',
-            'charset'=>'utf8mb4',
-            'dsn'=>'mysql:host={host};dbname={database};charset={charset}'
+            'default'=>[
+                'host'=>'localhost',
+                'database'=>'auto_db',
+                'username'=>'root',
+                'password'=>'',
+                'charset'=>'utf8mb4',
+                'auto-generate'=>false,
+                'dsn'=>'mysql:host={host};dbname={database};charset={charset}'
+            ]
         ],
         'prod'=>[
-            'host'=>'localhost',
-            'database'=>'project_social',
-            'username'=>'root',
-            'password'=>'',
-            'charset'=>'utf8mb4',
+            'default'=>[
+                'host'=>'localhost',
+                'database'=>'auto_db',
+                'username'=>'root',
+                'password'=>'',
+                'charset'=>'utf8mb4',
+                'auto-generate'=>true,
+                'dsn'=>'mysql:host={host};dbname={database};charset={charset}'
+            ],
             'select'=>[                
                 'host'=>'localhost',
-                'database'=>'project_social',
+                'database'=>'auto_db',
                 'username'=>'root',
                 'password'=>'',
                 'charset'=>'utf8mb4',
-            ],'delete'=>[
+                'dsn'=>'mysql:host={host};dbname={database};charset={charset}'
+            ],
+            'delete'=>[
                 'host'=>'localhost',
-                'database'=>'project_social',
+                'database'=>'auto_db',
                 'username'=>'root',
                 'password'=>'',
                 'charset'=>'utf8mb4',
+                'dsn'=>'mysql:host={host};dbname={database};charset={charset}'
             ],
             'insert'=>[
                 'host'=>'localhost',
-                'database'=>'project_social',
+                'database'=>'auto_db',
                 'username'=>'root',
                 'password'=>'',
                 'charset'=>'utf8mb4',
+                'dsn'=>'mysql:host={host};dbname={database};charset={charset}'
             ],
             'update'=>[
                 'host'=>'localhost',
-                'database'=>'project_social',
+                'database'=>'auto_db',
                 'username'=>'root',
                 'password'=>'',
                 'charset'=>'utf8mb4',
+                'dsn'=>'mysql:host={host};dbname={database};charset={charset}'
             ]
         ]
     ]
-            ];
+];

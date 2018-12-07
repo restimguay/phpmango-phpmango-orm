@@ -57,7 +57,7 @@ class BaseModel extends Connection
         $this->_tableName = $tableName;
         if($tableName!=''){
             $className = $this->parseClassname(get_class($this));
-            if($className != 'BaseModel'){
+            if($className != 'BaseModel' && $this->autoGenerateEnable()){
                 $this->checkTableConsistency($tableName);
             }
         }
@@ -88,7 +88,7 @@ class BaseModel extends Connection
         $this->_sql.= $this->getFilter();
         $this->_sql.= $this->getLimitBy();
         $this->_sql.= $this->getOffsetBy();
-        $this->_stmt = $this->db()->prepare($this->_sql);
+        $this->_stmt = $this->db('select')->prepare($this->_sql);
         $this->bindFilterValues();
         $this->_stmt->execute();
         return $this;
@@ -102,7 +102,7 @@ class BaseModel extends Connection
         $this->_filter = '';
         $this->_sql = $sql;
         $this->_parameters = $parameters;     
-        $this->_stmt = $this->db()->prepare($this->_sql);
+        $this->_stmt = $this->db('select')->prepare($this->_sql);
         $this->bindFilterValues(false);
         $result = $this->_stmt->execute();
         return $this;
@@ -287,7 +287,7 @@ class BaseModel extends Connection
     private function checkTableConsistency($tableName){
         $definition = $this->definition();
         try {
-            $result = $this->db()->query("SELECT 1 FROM $tableName LIMIT 1");
+            $result = $this->db('select')->query("SELECT 1 FROM $tableName LIMIT 1");
             if(!$result){                
                 $fieldInfo = isset($definition[$this->_primaryKey])?$definition[$this->_primaryKey]:[];
                 //set the default field type to string
@@ -299,6 +299,7 @@ class BaseModel extends Connection
                 $field = $this->_primaryKey.' int('.$max.') AUTO_INCREMENT PRIMARY KEY';
                 $required = isset($fieldInfo['required'])?$fieldInfo['required']:false;
                 $this->db()->query("CREATE TABLE $tableName ($field)");
+                echo "New $tableName table created";
             }
         } catch (Exception $e) {
             $this->db()->query("CREATE TABLE $tableName");
@@ -308,19 +309,22 @@ class BaseModel extends Connection
         $missingFields = [];
         $extraFields = [];
         $result = $this->_stmt->fetchAll(\PDO::FETCH_ASSOC);
-        echo "      //Missing properties for ".get_class($this)."\n\n";
+        
+        $msg ='';
         foreach($result as $column){
             $name = $column['Field'];
             $typ = $this->getPhpType($column['Type']);
             if(!property_exists($this,$name)){
-                echo "      /**\n";
-                echo "      *@var $typ $$name\n";
-                echo "      */\n";
-                echo "      public $$name;\n\n";
+                $msg.= "      /**\n";
+                $msg.= "      *@var $typ $$name\n";
+                $msg.= "      */\n";
+                $msg.= "      public $$name;\n\n";
                 $missingFields[] = [$column['Field'],$column['Type']];
             }
         }
-
+        if($msg!=''){
+            echo $msg;
+        }
         $objVars = get_object_vars($this);
 
         foreach($objVars as $var=>$value){

@@ -3,33 +3,35 @@
 namespace MGO\database;
 
 class DBConfig
-{
-    public $_dsn;
-    public $_username;
-    public $_password;
-
-    public function __construct(){        
-        return $this;
-    }
+{    
+    private $_config = [];
     
-    public function setConfig($config,$environment){
-        $config = $config[$environment];
-        $this->_dsn = $config['dsn'];
+    public function __construct(array $config, string $environment){
+        $this->_config = $config[$environment];
 
-        
-        preg_match_all('/{([^}]*)}/', $this->_dsn, $matches);
+        foreach($this->_config as $key=>$conf){
 
-        foreach($matches[0] as $match){
-            $ma = $this->getField($match);
-            $this->_dsn = preg_replace('/'.$match.'/', $config[$ma], $this->_dsn);
+            preg_match_all('/{([^}]*)}/', $this->_config[$key]['dsn'], $matches);
+
+            foreach($matches[0] as $match){
+                $ma = $this->getField($match);
+                $this->_config[$key]['dsn'] = preg_replace('/'.$match.'/', $this->_config[$key][$ma], $this->_config[$key]['dsn']);
+            }
         }
-        $this->_username =$config['username'];
-        $this->_password = $config['password'];
         return $this;
     }
-    private function getField($match){
-        return substr($match,1,strlen($match)-2);
+
+    public function getConfigList(){
+        return $this->_config;
     }
+
+    /**
+     * 
+     */
+    private function getField($match){
+        return substr($match, 1, strlen($match)-2);
+    }
+
     /**
      * Get the value of _dsn
      */ 
@@ -49,8 +51,6 @@ class DBConfig
 
         return $this;
     }
-
-
 
     /**
      * Get the value of _username
@@ -90,5 +90,13 @@ class DBConfig
         $this->_password = $_password;
 
         return $this;
+    }
+
+    /**
+     * Get the value of _auto_generate
+     */ 
+    public function getAutoGenerate()
+    {
+        return $this->_auto_generate;
     }
 }

@@ -2,24 +2,20 @@
 
 namespace MGO\database;
 
-class Connection extends \PDO
+class Connection
 {
     /**
      * @var DBConfig
      */
-    private $_config;
+    private static $_config;
     /**
-     * @var Connection
+     * @var \PDO[]
      */
-    private static $_instance;
-    /**
-     * @var \PDO
-     */
-    private static $_connection;
+    private static $_connection=[];
 
     public function __construct(DBConfig $config)
     {
-        $this->setConfig($config);
+        self::$_config = $config;
         $this->connect();
     }
 
@@ -28,15 +24,15 @@ class Connection extends \PDO
      * @param DBConfig
      */
     private function setConfig(DBConfig $config){
-        $this->_config = $config;
+        self::$_config = $config;
     }
     /**
      * Make a database connection
      */
     private function connect(){
-        if(self::$_connection == null){
-            parent::__construct($this->_config->getDSN(),$this->_config->getUsername(),$this->_config->getPassword());
-            self::$_connection = $this;
+        $config = self::$_config->getConfigList();
+        foreach($config as $key=>$conf){
+            self::$_connection[$key] = new \PDO($conf['dsn'], $conf['username'], $conf['password']);
         }
         return $this;
     }
@@ -45,10 +41,21 @@ class Connection extends \PDO
      * Get the value of _connection
      *
      * @return  \PDO
+     * @var string $verb
      */ 
-    public function db()
+    public function db(string $verb='default')
     {
-        return self::$_connection;
+        if(isset(self::$_connection[$verb])){
+            return self::$_connection[$verb];
+        }else{
+            return self::$_connection['default'];
+        }        
     }
-
+    /**
+     * @return boolean true if auto-generate is set to true, otherwise false
+     */
+    public function autoGenerateEnable(){
+        $config = self::$_config->getConfigList();
+        return $config['default']['auto-generate'];
+    }
 }
